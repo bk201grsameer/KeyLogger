@@ -1,6 +1,3 @@
-Sure, here's a basic Markdown file outlining the key features and usage of your keylogger program:
-
-```markdown
 # Keylogger Program
 
 This is a simple keylogger program written in Python using the pynput library to capture keyboard events. The program runs a keylogger in a separate thread and allows users to interact with it through commands in the main thread.
