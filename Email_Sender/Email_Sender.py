@@ -4,8 +4,8 @@ import smtplib
 
 class Email_Sender:
     def __init__(self) -> None:
-        self.app_password = "jemccgkhyyrwbhtv"
-        self.app_email = "karnsameer125@gmail.com"
+        self.app_password = "your app password"
+        self.app_email = "your email"
         pass
 
     def send_mail(self, email, password, message):
